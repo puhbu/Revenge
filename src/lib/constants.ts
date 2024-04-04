@@ -13,7 +13,6 @@ export const THEMES_CHANNEL_IDS = [
   "1205876424188104715"
 ];
 export const GITHUB = "https://github.com/revenge-mod";
-export const PROXY_PREFIX = "https://vd-plugins.github.io/proxy";
 export const PROXY_PREFIXES = [
   "https://vd-plugins.github.io/proxy",
   "https://revenge-plugins.github.io/proxy/"
