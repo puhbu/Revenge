@@ -1,12 +1,9 @@
 import {
-  DISCORD_SERVER_ID,
-  DISCORD_REVENGE_SERVER_ID,
-  THEMES_REVENGE_CHANNEL_ID,
-  PLUGINS_REVENGE_CHANNEL_ID,
+  DISCORD_SERVER_IDS,
   HTTP_REGEX_MULTI,
-  PLUGINS_CHANNEL_ID,
+  PLUGINS_CHANNEL_IDS,
   PROXY_PREFIXES,
-  THEMES_CHANNEL_ID
+  THEMES_CHANNEL_IDS
 } from "@lib/constants";
 import { after } from "@lib/patcher";
 import { installPlugin } from "@lib/plugins";
@@ -28,21 +25,14 @@ const { hideActionSheet } = findByProps("openLazy", "hideActionSheet");
 
 export default () =>
   after("default", ForumPostLongPressActionSheet, ([{ thread }], res) => {
-  if (thread.guild_id !== DISCORD_SERVER_ID && thread.guild_id !== DISCORD_REVENGE_SERVER_ID);
+    if (!DISCORD_SERVER_IDS.includes(thread.guild_id)) return;
 
     // Determine what type of addon this is.
     let postType: "Plugin" | "Theme";
-    if (thread.parent_id === PLUGINS_CHANNEL_ID) {
-      postType = "Plugin";
-    } else if (thread.parent_id === PLUGINS_REVENGE_CHANNEL_ID) {
+    if (PLUGINS_CHANNEL_IDS.includes(thread.parent_id)) {
       postType = "Plugin";
     } else if (
-      thread.parent_id === THEMES_CHANNEL_ID &&
-      window.__vendetta_loader?.features.themes
-    ) {
-      postType = "Theme";
-    } else if (
-      thread.parent_id === THEMES_REVENGE_CHANNEL_ID &&
+      THEMES_CHANNEL_IDS.includes(thread.parent_id) &&
       window.__vendetta_loader?.features.themes
     ) {
       postType = "Theme";
